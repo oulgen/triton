@@ -32,6 +32,8 @@ def _fwd_kernel(Q, K, V, sm_scale,  #
     off_hz = tl.program_id(1)
     qvk_offset = off_hz * stride_qh
     vk_offset = qvk_offset // stride_qm
+    tl.device_print("off_hz", off_hz)
+    tl.device_print("vk_offset1", vk_offset)
 
     K_block_ptr = tl.make_block_ptr(
         base=K,
@@ -105,6 +107,7 @@ def _fwd_kernel(Q, K, V, sm_scale,  #
         block_shape=(BLOCK_M, BLOCK_DMODEL),
         order=(1, 0),
     )
+    tl.device_print("vk_offset2", vk_offset)
     # O_ptrs = Out + qvk_offset + offs_m[:, None] * stride_qm + offs_k[None, :] * stride_qk
     tl.store(O_block_ptr, acc.to(K.dtype.element_ty))
 
