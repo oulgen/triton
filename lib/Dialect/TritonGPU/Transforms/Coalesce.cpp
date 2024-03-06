@@ -191,7 +191,7 @@ struct CoalescePass : public TritonGPUCoalesceBase<CoalescePass> {
         continue;
       unsigned currPerThread = getNumElementPerThread(opSameOrder);
       LDBG("perThread for opSameOrder: " << currPerThread);
-      perThread = std::max(perThread, currPerThread);
+      perThread = std::min(perThread, currPerThread);
     }
 
     perThread = std::min<int>(perThread, numElemsPerThread);
